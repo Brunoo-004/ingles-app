@@ -1,8 +1,8 @@
 {
-  "name": "Inglês em 5 minutos",
-  "short_name": "Inglês 5min",
-  "description": "Método matinal de 5 minutos: uma frase nova por dia para ouvir, repetir, criar e personalizar.",
-  "lang": "pt-BR",
+  "name": "English in 5 Minutes",
+  "short_name": "English 5min",
+  "description": "A 5-minute morning method: a new sentence every day to listen to, repeat, change and make your own.",
+  "lang": "en",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

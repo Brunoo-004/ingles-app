@@ -2,7 +2,7 @@
 // Estratégia: responde com a cópia salva (rápido, funciona sem internet) e,
 // ao mesmo tempo, busca a versão nova na rede para a próxima abertura.
 
-const CACHE = "ingles-app-v2";
+const CACHE = "ingles-app-v3";
 const ARQUIVOS = [
   "./",
   "index.html",

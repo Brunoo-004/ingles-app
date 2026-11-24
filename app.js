@@ -89,7 +89,7 @@ if ("speechSynthesis" in window) {
 
 function falar(texto, velocidade = 0.95) {
   if (!("speechSynthesis" in window)) {
-    alert("Este navegador não consegue reproduzir voz.");
+    alert("This browser can't play audio.");
     return;
   }
   speechSynthesis.cancel();
@@ -137,7 +137,7 @@ function desenharFrase() {
   const traducao = document.getElementById("traducao");
   traducao.textContent = frase.pt;
   traducao.classList.add("escondido");
-  document.getElementById("botao-traducao").textContent = "Ver tradução";
+  document.getElementById("botao-traducao").textContent = "Show translation";
   vezesOuvidas = 0;
   document.getElementById("contador-escuta").textContent = "";
 }
@@ -146,7 +146,7 @@ function ouvirFrase(velocidade) {
   falar(fraseDeHoje().en, velocidade);
   vezesOuvidas++;
   document.getElementById("contador-escuta").textContent =
-    `Você ouviu ${vezesOuvidas} ${vezesOuvidas === 1 ? "vez" : "vezes"}.`;
+    `You listened ${vezesOuvidas} ${vezesOuvidas === 1 ? "time" : "times"}.`;
 }
 
 document.getElementById("botao-ouvir").addEventListener("click", () => ouvirFrase(0.95));
@@ -158,7 +158,7 @@ document.querySelectorAll(".botao-ouvir-de-novo").forEach((b) =>
 document.getElementById("botao-traducao").addEventListener("click", (e) => {
   const traducao = document.getElementById("traducao");
   const escondida = traducao.classList.toggle("escondido");
-  e.target.textContent = escondida ? "Ver tradução" : "Esconder tradução";
+  e.target.textContent = escondida ? "Show translation" : "Hide translation";
 });
 
 document.getElementById("botao-trocar").addEventListener("click", () => {
@@ -266,14 +266,14 @@ async function validar(falado, modo) {
   if (normalizar(falado) === normalizar(original)) {
     return {
       tipo: "aviso",
-      html: `<span class="icone">🔁</span>Essa é igual à frase original. ${
-        modo === "trocar" ? "Troque pelo menos uma palavra!" : "Mude para algo da sua vida!"
+      html: `<span class="icone">🔁</span>That's the same as the original sentence. ${
+        modo === "trocar" ? "Change at least one word!" : "Make it about your own life!"
       }`,
     };
   }
 
   if (jaCriadas.includes(normalizar(falado))) {
-    return { tipo: "aviso", html: `<span class="icone">🔁</span>Essa você já falou. Tente uma nova!` };
+    return { tipo: "aviso", html: `<span class="icone">🔁</span>You already said that one. Try a new one!` };
   }
 
   const minimo = modo === "trocar" ? 0.5 : 0.3;
@@ -281,11 +281,11 @@ async function validar(falado, modo) {
     return {
       tipo: "errado",
       html:
-        `<span class="icone">✗</span><strong>Ficou muito diferente da original.</strong><br>` +
+        `<span class="icone">✗</span><strong>That's too different from the original.</strong><br>` +
         `<span class="detalhe">${
           modo === "trocar"
-            ? "Mantenha a frase e troque só uma parte dela."
-            : "Pode mudar o assunto, mas mantenha a mesma estrutura da frase."
+            ? "Keep the sentence and change just one part of it."
+            : "You can change the topic, but keep the same sentence structure."
         }</span>`,
     };
   }
@@ -299,13 +299,13 @@ async function validar(falado, modo) {
       tipo: "aviso",
       aceitar: true,
       html:
-        `<span class="icone">✓?</span>A estrutura parece boa, mas não consegui checar a gramática ` +
-        `(sem internet?). Guardei mesmo assim.`,
+        `<span class="icone">✓?</span>The structure looks good, but I couldn't check the grammar ` +
+        `(no internet?). I saved it anyway.`,
     };
   }
 
   if (erros.length === 0) {
-    return { tipo: "certo", aceitar: true, html: `<span class="icone">✓</span><strong>Perfeito!</strong> Grave outra se quiser.` };
+    return { tipo: "certo", aceitar: true, html: `<span class="icone">✓</span><strong>Perfect!</strong> Record another one if you like.` };
   }
 
   // Mostra o primeiro erro, de forma simples.
@@ -314,15 +314,15 @@ async function validar(falado, modo) {
   const trecho = escapar(texto.slice(e.offset, e.offset + e.length));
   const depois = escapar(texto.slice(e.offset + e.length));
   const sugestao = e.replacements && e.replacements.length
-    ? `<br>Talvez: <strong>${escapar(e.replacements.slice(0, 2).map((r) => r.value).join(" / "))}</strong>`
+    ? `<br>Maybe: <strong>${escapar(e.replacements.slice(0, 2).map((r) => r.value).join(" / "))}</strong>`
     : "";
   return {
     tipo: "errado",
     html:
-      `<span class="icone">✗</span><strong>Quase! Tem algo errado aqui:</strong><br>` +
+      `<span class="icone">✗</span><strong>Almost! Something's not quite right here:</strong><br>` +
       `${antes}<mark>${trecho}</mark>${depois}${sugestao}` +
       `<br><span class="detalhe">${escapar(e.message)}</span>` +
-      `<br><span class="detalhe">Tente de novo 🙂</span>`,
+      `<br><span class="detalhe">Try again 🙂</span>`,
   };
 }
 
@@ -359,10 +359,10 @@ function criarGravador(caixa) {
 
   if (!Reconhecimento) {
     botao.disabled = true;
-    botao.textContent = "🎤 Gravação indisponível";
+    botao.textContent = "🎤 Recording unavailable";
     mostrarResultado({
       tipo: "aviso",
-      html: "Este navegador não reconhece voz. Abra o app no <strong>Google Chrome</strong>.",
+      html: "This browser doesn't support speech recognition. Open the app in <strong>Google Chrome</strong>.",
     });
     return { limpar: desenharAceitas };
   }
@@ -385,7 +385,7 @@ function criarGravador(caixa) {
     rec.onstart = () => {
       gravando = true;
       botao.classList.add("gravando");
-      botao.textContent = "⏺ Ouvindo... (toque para parar)";
+      botao.textContent = "⏺ Listening... (tap to stop)";
       ouvi.classList.remove("escondido");
       ouvi.textContent = "…";
       resultado.classList.add("escondido");
@@ -393,32 +393,32 @@ function criarGravador(caixa) {
 
     rec.onresult = (ev) => {
       textoFinal = [...ev.results].map((r) => r[0].transcript).join(" ");
-      ouvi.innerHTML = `Ouvi: <strong>“${escapar(textoFinal)}”</strong>`;
+      ouvi.innerHTML = `I heard: <strong>“${escapar(textoFinal)}”</strong>`;
     };
 
     rec.onerror = (ev) => {
       if (ev.error === "not-allowed" || ev.error === "service-not-allowed") {
-        mostrarResultado({ tipo: "aviso", html: "O app precisa de permissão para usar o microfone. Libere nas configurações do navegador." });
+        mostrarResultado({ tipo: "aviso", html: "The app needs permission to use the microphone. Allow it in your browser settings." });
       } else if (ev.error === "no-speech") {
-        mostrarResultado({ tipo: "aviso", html: "Não ouvi nada. Toque e fale de novo." });
+        mostrarResultado({ tipo: "aviso", html: "I didn't hear anything. Tap and speak again." });
       } else if (ev.error === "network") {
-        mostrarResultado({ tipo: "aviso", html: "O reconhecimento de voz precisa de internet." });
+        mostrarResultado({ tipo: "aviso", html: "Speech recognition needs an internet connection." });
       }
     };
 
     rec.onend = async () => {
       gravando = false;
       botao.classList.remove("gravando");
-      botao.textContent = "🎤 Toque para falar";
+      botao.textContent = "🎤 Tap to speak";
       if (!textoFinal.trim()) {
         if (resultado.classList.contains("escondido")) {
           ouvi.classList.add("escondido");
-          mostrarResultado({ tipo: "aviso", html: "Não ouvi nada. Toque e fale de novo." });
+          mostrarResultado({ tipo: "aviso", html: "I didn't hear anything. Tap and speak again." });
         }
         return;
       }
       botao.disabled = true;
-      mostrarResultado({ tipo: "aviso", html: "Verificando…" });
+      mostrarResultado({ tipo: "aviso", html: "Checking…" });
       const r = await validar(textoFinal, modo);
       botao.disabled = false;
       mostrarResultado(r);
@@ -443,7 +443,7 @@ function itemFrase(texto) {
   const botao = document.createElement("button");
   botao.type = "button";
   botao.textContent = "🔊";
-  botao.setAttribute("aria-label", "Ouvir");
+  botao.setAttribute("aria-label", "Listen");
   botao.addEventListener("click", () => falar(texto));
   li.append(span, botao);
   return li;
@@ -464,7 +464,7 @@ function desenharCriadas() {
   if (criadas.length === 0) {
     const li = document.createElement("li");
     li.className = "vazio";
-    li.textContent = "Nenhuma frase gravada hoje. Escreva a frase original ou uma que você criou de cabeça.";
+    li.textContent = "No sentences recorded today. Write the original sentence or one you made up in your head.";
     lista.appendChild(li);
   } else {
     criadas.forEach((c) => lista.appendChild(itemFrase(c.texto)));
@@ -474,16 +474,16 @@ function desenharCriadas() {
 function desenharStatus() {
   const feito = diaDeHoje().concluido;
   const status = document.getElementById("status-hoje");
-  status.textContent = feito ? "✓ Exercício de hoje concluído!" : "Seu exercício de hoje";
+  status.textContent = feito ? "✓ Today's practice is done!" : "Your practice for today";
   status.classList.toggle("feito", feito);
   const botao = document.getElementById("botao-concluir");
-  botao.textContent = feito ? "✓ Concluído hoje (toque para desfazer)" : "✓ Concluir o dia";
+  botao.textContent = feito ? "✓ Done today (tap to undo)" : "✓ Finish today";
   botao.classList.toggle("feito", feito);
 }
 
 document.getElementById("botao-concluir").addEventListener("click", () => {
   const dia = diaDeHoje();
-  if (dia.concluido && !confirm("Desmarcar o dia de hoje como concluído?")) return;
+  if (dia.concluido && !confirm("Unmark today as done?")) return;
   dia.concluido = !dia.concluido;
   salvar();
   desenharStatus();
@@ -508,7 +508,7 @@ function sequenciaAtual() {
 function desenharCalendario() {
   document.getElementById("sequencia").textContent = sequenciaAtual();
   document.getElementById("total-dias").textContent = Object.values(dados.dias).filter((d) => d.concluido).length;
-  document.getElementById("titulo-mes").textContent = mesVisivel.toLocaleDateString("pt-BR", {
+  document.getElementById("titulo-mes").textContent = mesVisivel.toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
   });
@@ -546,12 +546,12 @@ function mostrarDetalhe(chave) {
   caixa.innerHTML = "";
   const titulo = document.createElement("p");
   titulo.className = "rotulo";
-  titulo.textContent = `${d}/${m}/${a}${dia?.concluido ? " · ✓ concluído" : ""}`;
+  titulo.textContent = `${new Date(a, m - 1, d).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}${dia?.concluido ? " · ✓ done" : ""}`;
   caixa.appendChild(titulo);
   if (!dia) {
     const p = document.createElement("p");
     p.className = "dica";
-    p.textContent = "Nenhum exercício neste dia.";
+    p.textContent = "No practice on this day.";
     caixa.appendChild(p);
   } else {
     const frase = document.createElement("p");
