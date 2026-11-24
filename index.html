@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Inglês em 5 minutos</title>
+  <meta name="theme-color" content="#fbe3c8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Inglês 5min">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <!-- Tela 1: o exercício de hoje -->
+    <div id="tela-hoje">
+      <h1>Inglês em 5 minutos</h1>
+      <p id="status-hoje" class="status"></p>
+
+      <!-- Indicador dos 5 minutos -->
+      <ol id="passos" class="passos"></ol>
+
+      <!-- Minuto 1: escuta -->
+      <section class="etapa" data-etapa="1">
+        <p class="rotulo">Minuto 1 · Escuta ativa</p>
+        <div class="cartao">
+          <p class="frase" id="frase-do-dia"></p>
+          <p class="traducao escondido" id="traducao"></p>
+          <div class="botoes">
+            <button type="button" id="botao-ouvir" class="principal">🔊 Ouvir</button>
+            <button type="button" id="botao-devagar">🐢 Devagar</button>
+          </div>
+          <p class="dica" id="contador-escuta"></p>
+        </div>
+        <p class="dica">Ouça quantas vezes quiser. Tente entender pelo som, sem traduzir na cabeça.</p>
+        <div class="botoes">
+          <button type="button" id="botao-traducao" class="discreto">Ver tradução</button>
+          <button type="button" id="botao-trocar" class="discreto">Outra frase</button>
+        </div>
+      </section>
+
+      <!-- Minuto 2: repetição -->
+      <section class="etapa" data-etapa="2">
+        <p class="rotulo">Minuto 2 · Repetição</p>
+        <div class="cartao">
+          <p class="frase frase-repetir"></p>
+          <div class="botoes">
+            <button type="button" class="botao-ouvir-de-novo">🔊 Ouvir de novo</button>
+          </div>
+        </div>
+        <p class="dica">Fale a frase em voz alta <strong>3 vezes</strong>. Aqui você não precisa do app.</p>
+        <div class="repeticoes" id="repeticoes">
+          <button type="button" class="bolinha" aria-label="Repetição 1">1</button>
+          <button type="button" class="bolinha" aria-label="Repetição 2">2</button>
+          <button type="button" class="bolinha" aria-label="Repetição 3">3</button>
+        </div>
+        <p class="dica centro">Toque numa bolinha a cada repetição (opcional).</p>
+      </section>
+
+      <!-- Minuto 3: criação -->
+      <section class="etapa" data-etapa="3">
+        <p class="rotulo">Minuto 3 · Criação</p>
+        <div class="cartao">
+          <p class="frase frase-repetir"></p>
+        </div>
+        <p class="dica">Troque <strong>uma parte</strong> da frase e fale. Exemplo: “without saying a word” → “without making a sound”.</p>
+        <div class="gravador" data-modo="trocar"></div>
+      </section>
+
+      <!-- Minuto 4: personalização -->
+      <section class="etapa" data-etapa="4">
+        <p class="rotulo">Minuto 4 · Personalização</p>
+        <div class="cartao">
+          <p class="frase frase-repetir"></p>
+        </div>
+        <p class="dica">Use a mesma estrutura para falar de algo <strong>real do seu dia</strong>.</p>
+        <div class="gravador" data-modo="personalizar"></div>
+      </section>
+
+      <!-- Minuto 5: escrita -->
+      <section class="etapa" data-etapa="5">
+        <p class="rotulo">Minuto 5 · Escrita</p>
+        <p class="dica">Escreva à mão, no papel, as frases que você criou hoje:</p>
+        <ul id="frases-criadas" class="lista-criadas"></ul>
+        <button type="button" id="botao-concluir" class="concluir">✓ Concluir o dia</button>
+      </section>
+
+      <div class="navegacao">
+        <button type="button" id="botao-voltar">← Voltar</button>
+        <button type="button" id="botao-avancar" class="principal">Próximo →</button>
+      </div>
+    </div>
+
+    <!-- Tela 2: calendário -->
+    <div id="tela-calendario" class="escondido">
+      <h1>Calendário</h1>
+      <div class="resumo">
+        <div><strong id="sequencia">0</strong><span>dias seguidos</span></div>
+        <div><strong id="total-dias">0</strong><span>dias no total</span></div>
+      </div>
+      <div class="mes">
+        <button type="button" id="mes-anterior" aria-label="Mês anterior">‹</button>
+        <h2 id="titulo-mes"></h2>
+        <button type="button" id="mes-seguinte" aria-label="Próximo mês">›</button>
+      </div>
+      <div class="semana">
+        <span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span>
+      </div>
+      <div id="calendario-grade" class="grade"></div>
+      <div id="detalhe-dia" class="cartao escondido"></div>
+    </div>
+  </main>
+
+  <!-- Barra de abas -->
+  <nav class="abas">
+    <button type="button" data-aba="hoje" class="ativa">📖 Hoje</button>
+    <button type="button" data-aba="calendario">📅 Calendário</button>
+  </nav>
+
+  <!-- Modelo do gravador (usado nos minutos 3 e 4) -->
+  <template id="modelo-gravador">
+    <button type="button" class="botao-gravar">🎤 Toque para falar</button>
+    <p class="ouvi escondido"></p>
+    <div class="resultado escondido"></div>
+    <ul class="aceitas"></ul>
+  </template>
+
+  <script src="frases.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
